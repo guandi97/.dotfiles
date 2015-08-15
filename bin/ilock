@@ -1,0 +1,3 @@
+#! /bin/sh
+
+i3lock -u -i /home/derpy/Pictures/bkGrd/blackRockShooter.png
