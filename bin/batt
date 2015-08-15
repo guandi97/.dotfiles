@@ -1,0 +1,18 @@
+#! /bin/sh
+
+PNOW=$(cat /sys/class/power_supply/BAT0/current_now)
+ENOW=$(cat /sys/class/power_supply/BAT0/charge_now)
+FULL=$(cat /sys/class/power_supply/BAT0/charge_full)
+
+echo -n "BAT: "
+echo "scale=2;$ENOW*100/$FULL" | bc -l
+echo -n "ETA: "
+if [ $(cat /sys/class/power_supply/BAT0/status) = "Discharging" ]; then
+	echo "scale=2; $ENOW/$PNOW*60" | bc -l
+else
+	if [[ $PNOW -ne 0 ]]; then
+		echo "scale=2; ($FULL-$ENOW)/$PNOW*60" | bc -l
+	else
+		echo 'N/A'
+	fi
+fi
